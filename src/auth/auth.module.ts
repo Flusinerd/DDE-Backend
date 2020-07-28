@@ -26,6 +26,6 @@ import { hash, compare } from 'bcrypt';
         }
       },
     ]),
-  ]
+  ],
 })
 export class AuthModule {}

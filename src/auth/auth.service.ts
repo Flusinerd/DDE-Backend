@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schema/user.schema';
 import { Model } from 'mongoose';
@@ -20,10 +20,11 @@ export class AuthService {
   async loginUser(username: string, password: string): Promise<User>{
     const userWithPassword = await this.userModel.findOne({username}).select('+password');
     if (!userWithPassword || !userWithPassword.verifyPassword(password)) {
-      throw new Error ('Wrong Credentials');
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
-    delete userWithPassword.password;
-    return userWithPassword;
+    const user = Object.assign({}, userWithPassword.toObject());
+    delete user.password;
+    return user;
   }
   
   private async _getOneWithPassword(id: string): Promise<User>{

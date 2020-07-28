@@ -7,7 +7,7 @@ export class PodConfig{
   private _imageTag?:  string;
   volumeName?: string;
   sshConfig?: SSHConfig
-  user: User
+  user: {username: string}
 
   set imageName(imageName: string){
     const parts = imageName.split(':');
